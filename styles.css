@@ -1,0 +1,214 @@
+/* General styles for the body */
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #e8f5e9;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    position: relative;
+}
+
+/* Styling for the banner */
+#banner {
+    background-color: #e8f5e9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 2px solid #e8f5e9;
+}
+.flex {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+/* Style for the date banner */
+.date-banner {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+#banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+#date-banner {
+    text-align: right;  /* Aligns the date to the right */
+    font-size: 16px;    /* Optional: Adjusts font size */
+    color: #333;        /* Optional: Adjusts font color */
+}
+
+img {
+    height: 50px;       /* Optional: Adjusts the logo size */
+    margin-right: 10px; /* Optional: Space between logos */
+}
+
+.content {
+    margin-top: 60px;
+}
+
+#income-display {
+    font-weight: bold;
+    margin-left: 10px; /* Space between the slider and the display */
+}
+
+#banner img {
+    height: 50px;
+}
+
+#banner h1 {
+    margin: 0;
+    font-size: 50px;
+}
+
+#date-banner {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Form styling */
+form {
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Heading styles */
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    color: #00796b;
+    text-align: center;
+}
+
+/* Input and form element styling */
+input[type="text"],
+input[type="password"],
+textarea,
+select,
+input[type="range"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+/* Buttons */
+button {
+    background-color: #00796b;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Checkbox and radio button groups */
+td input[type="checkbox"], td label {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.flex {
+    display: flex;
+    align-items: center; /* Align items vertically centered */
+    justify-content: space-between; /* Space out items */
+}
+
+.form-group {
+    margin-top: 10px; /* Space between the label and input elements */
+}
+
+.checkbox-group,
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+
+.checkbox-group label,
+.radio-group label {
+    margin-right: 5px; /* Space between checkbox/radio items */
+}
+
+/* Review section styling */
+#reviewSection {
+    border: 2px solid #007BFF;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+    display: none; /* Hidden by default */
+    background-color: #f9f9f9;
+}
+
+/* Footer styling */
+footer {
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    color: #757575;
+    margin-top: 20px;
+}
+
+footer a {
+    color: #00796b;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Links */
+a {
+    color: #00796b;
+}
+
+a:visited {
+    color: #004d40;
+}
+
+/* Special styles for SSN input validation */
+#ssn {
+    outline: 0;
+}
+
+#ssn:valid {
+    border-color: green;
+}
+.error {
+    color: red;
+    font-size: 0.8em;
+}
+
+input.error, select.error {
+    border-color: red;
+}
+
+#householdIncome {
+    width: calc(100% - 20px); /* Adjust width for better spacing */
+}
+
+#incomeDisplay {
+    font-weight: bold;
+}

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Registration Form</title>
+    <link href="styles.css" rel="stylesheet"> <!-- Link to external CSS -->
+    <script src="validate.js" defer></script>  <!-- Link to external JavaScript -->
+</head>
+<body>
+    
+    <div id="banner">
+        <img src="file.png" alt="Company Logo">
+        <img src="logo-png_processed.png" alt="Company Logo">
+        <div id="date-banner"></div>
+    </div>
+
+<script>
+    window.onload = function() {
+        // Function to format the date as "Month Day, Year"
+        function formatDate() {
+            const options = { 
+                month: 'long', 
+                day: 'numeric', 
+                year: 'numeric'
+            };
+            const today = new Date();
+            return today.toLocaleDateString('en-US', options);
+        }
+
+        // Display the current date in the banner
+        document.getElementById('date-banner').textContent = "Today's Date: " + formatDate();
+    };
+</script>
+
+
+    <h1>Patient Registration Form</h1>
+    <form id="patientForm" action="thankyouform.html" method="GET">
+        <table>
+            <tr>
+                <td><label for="firstName">First Name:</label></td>
+                <td><input type="text" id="firstName" name="firstName" maxlength="30" title="Enter your first name" required></td>
+                <td><span id="errorFirstName"></span></td>
+            </tr>
+            <tr>
+                <td><label for="middleName">Middle Name:</label></td>
+                <td><input type="text" id="middleName" name="middleName" maxlength="30" title="Enter your middle name"></td>
+                <td><span id="errorMiddleInitial"></span></td>
+            </tr>
+            <tr>
+                <td><label for="lastName">Last Name:</label></td>
+                <td><input type="text" id="lastName" name="lastName" maxlength="30" title="Enter your last name" required></td>
+                <td><span id="errorLastName"></span></td>
+            </tr>
+            <tr>
+                <td><label for="dob">DOB:</label></td>
+                <td><input type="text" id="dob" name="dob" placeholder="MM/DD/YYYY" title="Enter your date of birth" required></td>
+                <td><span id="errorDob"></span></td>
+            </tr>
+            <tr>
+                <td><label for="ssn">Social Security:</label></td>
+                <td><input type="text" id="ssn" name="ssn" placeholder="XXX-XX-XXXX" title="Enter your SSN" maxlength="11" required></td>
+                <td><span id="errorSsn"></span></td>
+            </tr>
+            <tr>
+                <td><label for="address1">Address Line 1:</label></td>
+                <td><input type="text" id="address1" name="address1" title="Enter your address" required></td>
+                <td><span id="errorAddress1"></span></td>
+            </tr>
+            <tr>
+                <td><label for="address2">Address Line 2:</label></td>
+                <td><input type="text" id="address2" name="address2" title="Enter your address (optional)"></td>
+                <td><span id="errorAddress2"></span></td>
+            </tr>
+            <tr>
+                <td><label for="city">City:</label></td>
+                <td><input type="text" id="city" name="city" title="Enter your city" required></td>
+                <td><span id="errorCity"></span></td>
+            </tr>
+            <tr>
+                <td><label for="state">State:</label></td>
+                <td>
+                    <select id="state" name="state" title="Select your state" required>
+                            <option value="AL">Alabama</option>
+                            <option value="AK">Alaska</option>
+                            <option value="AZ">Arizona</option>
+                            <!-- Add all other states here -->
+                    </select>
+                </td>
+                <td><span id="errorState"></span></td>
+            </tr>
+            <tr>
+                <td><label for="zip">Zip Code:</label></td>
+                <td><input type="text" id="zip" name="zip" maxlength="5" placeholder="XXXXX" title="Enter your zip code" pattern="^\d{5}$" required></td>
+                <td><span id="errorZip"></span></td>
+            </tr>
+            <tr>
+                <td><label>Have you had:</label></td>
+                <td>
+                    <label><input type="checkbox" name="disease" value="Chicken Pox"> Chicken Pox</label><br>
+                    <label><input type="checkbox" name="disease" value="Measles"> Measles</label><br>
+                    <label><input type="checkbox" name="disease" value="Covid-19"> Covid-19</label><br>
+                    <label><input type="checkbox" name="disease" value="Flu"> Flu</label><br>
+                    <label><input type="checkbox" name="disease" value="Other"> Other</label>
+                </td>
+                <td><span class="error-message" id="vaccinated-error"></span></td>
+            </tr>
+            <tr>
+                <td><label>Have you been vaccinated?</label></td>
+                <td>
+                    <label><input type="radio" name="vaccinationStatus" value="yes" required> Yes</label>
+                    <label><input type="radio" name="vaccinationStatus" value="no"> No</label>
+                    <label><input type="radio" name="vaccinationStatus" value="unsure"> Unsure</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                <label for="income-slider" class="flex">
+                    Household Income:
+                    <input type="range" id="income-slider" name="income" min="20000" max="200000" step="1000" value="60000" oninput="updateIncomeDisplay()">
+                    <span id="income-display">$60,000</span>
+                </label>
+            </td>
+            </tr>
+            <tr>
+                <td><label for="email">Email:</label></td>
+                <td><input type="email" id="email" name="email" title="Enter a valid email address" required></td>
+                <td><span id="errorEmail"></span></td>
+            </tr>
+            <tr>
+                <td><label for="symptoms">Describe Your Symptoms:</label></td>
+                <td><textarea id="symptoms" name="symptoms" rows="3" cols="50" title="Describe your symptoms" required></textarea></td>
+            </tr>
+            <tr>
+                <td><label for="userId">User ID:</label></td>
+                <td><input type="text" id="userId" name="userId" maxlength="20" required></td>
+                <td><span id="errorUserId"></span></td>
+            </tr>
+            <tr>
+                <td><label for="password">Password:</label></td>
+                <td><input type="password" id="password" name="password" required></td>
+                <td><span id="errorPassword"></span></td>
+            </tr>
+            <tr>
+                <td><label for="confirm-password">Confirm Password:</label></td>
+                <td><input type="password" id="confirm-password" name="confirm-password" required></td>
+                <td><span id="errorConfirmPassword"></span></td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <button type="button" onclick="validateForm()">Validate</button>
+                    <button type="submit" id="submitBtn" style="display: none;">Submit</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <button type="submit" id="submitBtn" style="display:none;">Submit</button>
+    <!-- Review Button -->
+    <button type="button" id="reviewButton" onclick="showReview()">Review</button>
+
+    <!-- Review Section (Initially hidden) -->
+    <div id="reviewSection" style="display:none; border: 1px solid #ccc; padding: 15px; margin-top: 20px;">
+        <h3>Review Your Information</h3>
+        <p><strong>First Name:</strong> <span id="reviewFirstName"></span></p>
+        <p><strong>Last Name:</strong> <span id="reviewLastName"></span></p>
+        <p><strong>Date of Birth:</strong> <span id="reviewDOB"></span></p>
+        <p><strong>SSN:</strong> <span id="reviewSSN"></span></p>
+        <p><strong>Address Line 1:</strong> <span id="reviewAddress1"></span></p>
+        <p><strong>Address Line 2:</strong> <span id="reviewAddress2"></span></p>
+        <p><strong>City:</strong> <span id="reviewCity"></span></p>
+        <p><strong>State:</strong> <span id="reviewState"></span></p>
+        <p><strong>Zip Code:</strong> <span id="reviewZip"></span></p>
+        <p><strong>Vaccination Status:</strong> <span id="reviewVaccinationStatus"></span></p>
+        <p><strong>Household Income:</strong> <span id="reviewSalary"></span></p>
+        <p><strong>Email:</strong> <span id="reviewEmail"></span></p>
+        <p><strong>Symptoms:</strong> <span id="reviewSymptoms"></span></p>
+        <p><strong>User ID:</strong> <span id="reviewUsername"></span></p>
+    </div>
+
+</body>
+</html>
+
