@@ -107,6 +107,17 @@ function validateDOB() {
         clearError(dob);
     }
 }
+// Validate password and confirm password
+function validatePasswords() {
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirm-password");
+
+    if (password.value !== confirmPassword.value) {
+        setError(confirmPassword, "Passwords do not match.");
+    } else {
+        clearError(confirmPassword);
+    }
+}
 
 // Update salary display based on slider value
 function updateIncomeDisplay() {
