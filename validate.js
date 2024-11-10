@@ -1,173 +1,114 @@
-// Utility function to add error messages
-function setError(element, message) {
-    const errorSpan = document.getElementById("error" + element.id.charAt(0).toUpperCase() + element.id.slice(1));
-    errorSpan.textContent = message;
-    element.classList.add("error");
-}
+// Update Date Banner on page load
+window.onload = function updateDate() {
+    const now = new Date();
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const day = days[now.getDay()];
+    const date = now.getDate();
+    const month = months[now.getMonth()];
+    const year = now.getFullYear();
+    document.getElementById('date-banner').innerHTML = `Today is: ${day}, ${month} ${date}, ${year}`;
+};
 
-// Utility function to clear error messages
-function clearError(element) {
-    const errorSpan = document.getElementById("error" + element.id.charAt(0).toUpperCase() + element.id.slice(1));
-    errorSpan.textContent = "";
-    element.classList.remove("error");
-}
-
-// Clear all errors
-function clearAllErrors() {
-    const errorMessages = document.querySelectorAll('span[id^="error"]');
-    for (let error of errorMessages) {
-        error.textContent = ""; // Clear the error text
-    }
-
-    // Remove "error" class from all form elements
-    const formElements = document.querySelectorAll('input, select, textarea');
-    for (let element of formElements) {
-        element.classList.remove("error");
-    }
-}
-
-// Validate first and last names
-function validateName(element) {
-    const namePattern = /^[A-Za-z'-]+$/;
-    if (!namePattern.test(element.value)) {
-        setError(element, "Only letters, apostrophes, and dashes are allowed.");
-    } else {
-        clearError(element);
-    }
-}
-
-// Validate SSN (Social Security Number)
-function validateSSN() {
-    const ssn = document.getElementById("ssn");
-    const ssnPattern = /^\d{3}-\d{2}-\d{4}$/;
-    if (!ssnPattern.test(ssn.value)) {
-        setError(ssn, "Enter a valid SSN in the format XXX-XX-XXXX.");
-    } else {
-        clearError(ssn);
-    }
-}
-
-// Validate Zip Code
-function validateZip() {
-    const zip = document.getElementById("zip");
-    const zipPattern = /^\d{5}$/;
-    if (!zipPattern.test(zip.value)) {
-        setError(zip, "Enter a valid 5-digit zip code.");
-    } else {
-        clearError(zip);
-    }
-}
-
-// Validate email
-function validateEmail() {
-    const email = document.getElementById("email");
-    const emailPattern = /^[a-z0-9]+@[a-z0-9]+\.[a-z]{2,3}$/i;
-    if (!emailPattern.test(email.value)) {
-        setError(email, "Enter a valid email address.");
-    } else {
-        clearError(email);
-    }
-}
-
-// Validate user ID
-function validateUserId() {
-    const userId = document.getElementById("userId");
-    const userIdPattern = /^[a-zA-Z0-9_-]{6,20}$/;
-    if (!userIdPattern.test(userId.value)) {
-        setError(userId, "User ID must be 6-20 characters long and can contain letters, numbers, underscores, or hyphens.");
-    } else {
-        clearError(userId);
-    }
-}
-
-// Validate password and confirm password
-function validatePasswords() {
-    const password = document.getElementById("password");
-    const confirmPassword = document.getElementById("confirm-password");
-
-    if (password.value !== confirmPassword.value) {
-        setError(confirmPassword, "Passwords do not match.");
-    } else {
-        clearError(confirmPassword);
-    }
-}
-
-// Validate Date of Birth
-function validateDOB() {
-    const dob = document.getElementById("dob");
-    const dobDate = new Date(dob.value);
-    const today = new Date();
-    const age = today.getFullYear() - dobDate.getFullYear();
-
-    if (dobDate > today) {
-        setError(dob, "Date of birth cannot be in the future.");
-    } else if (age > 120) {
-        setError(dob, "Date of birth cannot be more than 120 years ago.");
-    } else {
-        clearError(dob);
-    }
-}
-
-// Validate salary input and show error if necessary
-function validateSalary() {
-    const salary = document.getElementById("income-slider");
-    const salaryDisplay = document.getElementById("errorIncome");
-
-    if (!salary.value) {
-        salaryDisplay.textContent = "Please select a salary.";
-        salary.classList.add("error");
-    } else {
-        salaryDisplay.textContent = "";
-        salary.classList.remove("error");
-    }
-}
-
-// Update the salary display whenever the slider value changes
-document.getElementById("income-slider").addEventListener('input', function() {
-    const salary = document.getElementById("income-slider");
-    const salaryDisplay = document.getElementById("income-display");
-    salaryDisplay.textContent = "$" + salary.value;
+// Update salary display dynamically
+document.getElementById('salary').addEventListener('input', function () {
+    const salaryValue = this.value;
+    document.getElementById('salaryDisplay').innerText = '$' + salaryValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 });
 
-// Validate all fields and return true if valid
-function validateForm() {
-    clearAllErrors();
-
-    validateName(document.getElementById("firstName"));
-    validateName(document.getElementById("lastName"));
-    validateSSN();
-    validateEmail();
-    validateUserId();
-    validatePasswords();
-    validateDOB();
-    validateSalary();
-
-    // Check if there are any errors
-    const errors = document.querySelectorAll('.error');
-    const submitBtn = document.getElementById("submitBtn");
-
-    // If no errors, show the submit button
-    if (errors.length === 0) {
-        submitBtn.style.display = "block"; // Show the submit button
+// Validate form fields
+function validateField(id, validationFn, errorMsg) {
+    const field = document.getElementById(id);
+    const errorDisplay = document.getElementById(id + '-error');
+    
+    if (validationFn(field.value)) {
+        errorDisplay.style.display = 'none';
+        return true;
     } else {
-        submitBtn.style.display = "none"; // Hide the submit button
+        errorDisplay.style.display = 'block';
+        errorDisplay.innerText = errorMsg;
+        return false;
     }
 }
 
-// Call validateForm() whenever a user interacts with the form to validate fields dynamically
-document.getElementById("firstName").addEventListener('input', () => validateName(document.getElementById("firstName")));
-document.getElementById("lastName").addEventListener('input', () => validateName(document.getElementById("lastName")));
-document.getElementById("ssn").addEventListener('input', validateSSN);
-document.getElementById("email").addEventListener('input', validateEmail);
-document.getElementById("userId").addEventListener('input', validateUserId);
-document.getElementById("password").addEventListener('input', validatePasswords);
-document.getElementById("confirm-password").addEventListener('input', validatePasswords);
-document.getElementById("dob").addEventListener('input', validateDOB);
-document.getElementById("income-slider").addEventListener('input', validateSalary);
+// Validate all fields on submit
+document.getElementById('patientForm').addEventListener('submit', function (e) {
+    const fieldsToValidate = [
+        {id: 'firstName', validationFn: (value) => /^[A-Za-z]+$/.test(value), errorMsg: 'First name should contain only letters.'},
+        {id: 'lastName', validationFn: (value) => /^[A-Za-z]+$/.test(value), errorMsg: 'Last name should contain only letters.'},
+        {id: 'dob', validationFn: (value) => /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/([0-9]{4})$/.test(value), errorMsg: 'Date of Birth format should be MM/DD/YYYY.'},
+        {id: 'ssn', validationFn: (value) => /^\d{3}-\d{2}-\d{4}$/.test(value), errorMsg: 'SSN should be in the format XXX-XX-XXXX.'},
+        {id: 'zip', validationFn: (value) => /^\d{5}(-\d{4})?$/.test(value), errorMsg: 'Zip code should be in the format XXXXX or XXXXX-XXXX.'},
+        {id: 'email', validationFn: (value) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value), errorMsg: 'Please enter a valid email address.'},
+        {id: 'username', validationFn: (value) => value.length >= 3, errorMsg: 'Username must be at least 3 characters long.'},
+        {id: 'password', validationFn: (value) => /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value), errorMsg: 'Password must be at least 8 characters, containing at least one uppercase letter, one lowercase letter, and one number.'},
+        {id: 'rePassword', validationFn: (value) => value === document.getElementById('password').value, errorMsg: 'Passwords do not match.'}
+    ];
 
-// Validate on button click
-document.getElementById("validateBtn").addEventListener('click', validateForm);
+    let valid = true;
+    fieldsToValidate.forEach(field => {
+        if (!validateField(field.id, field.validationFn, field.errorMsg)) {
+            valid = false;
+        }
+    });
 
+    if (!valid) {
+        e.preventDefault(); // Prevent form submission if validation fails
+    }
+});
 
+// Review form data before submission
+document.getElementById('reviewButton').addEventListener('click', showReview);
+
+function showReview() {
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const dob = document.getElementById('dob').value;
+    const ssn = document.getElementById('ssn').value;
+    const address1 = document.getElementById('address1').value;
+    const address2 = document.getElementById('address2').value;
+    const city = document.getElementById('city').value;
+    const state = document.getElementById('state').value;
+    const zip = document.getElementById('zip').value;
+    const diseases = Array.from(document.querySelectorAll('input[name="disease"]:checked')).map(cb => cb.value).join(', ') || 'None';
+    const vaccinationStatus = document.querySelector('input[name="vaccinationStatus"]:checked')?.value || 'Not specified';
+    const salary = document.getElementById('salary').value;
+    const formattedSalary = '$' + salary.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const email = document.getElementById('email').value;
+    const symptoms = document.getElementById('symptoms').value;
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const rePassword = document.getElementById('rePassword').value;
+
+    // Validate password match
+    if (password !== rePassword) {
+        alert("Passwords do not match. Please check your entries.");
+        return;
+    }
+
+    // Populate the review section
+    document.getElementById('reviewFirstName').innerText = firstName;
+    document.getElementById('reviewLastName').innerText = lastName;
+    document.getElementById('reviewDOB').innerText = dob;
+    document.getElementById('reviewSSN').innerText = ssn;
+    document.getElementById('reviewAddress1').innerText = address1;
+    document.getElementById('reviewAddress2').innerText = address2;
+    document.getElementById('reviewCity').innerText = city;
+    document.getElementById('reviewState').innerText = state;
+    document.getElementById('reviewZip').innerText = zip;
+    document.getElementById('reviewDisease').innerText = diseases;
+    document.getElementById('reviewVaccinationStatus').innerText = vaccinationStatus;
+    document.getElementById('reviewSalary').innerText = formattedSalary;
+    document.getElementById('reviewEmail').innerText = email;
+    document.getElementById('reviewSymptoms').innerText = symptoms;
+    document.getElementById('reviewUsername').innerText = username;
+
+    document.getElementById('reviewSection').style.display = 'block';
+}
+
+// Hide review section for edits
+function hideReview() {
+    document.getElementById('reviewSection').style.display = 'none';
+}
 
 
