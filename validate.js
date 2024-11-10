@@ -54,6 +54,18 @@ function validateZip() {
         clearError(zip);
     }
 }
+// Email validation function (converts to lowercase)
+const emailField = document.getElementById("email");
+emailField.addEventListener("input", function() {
+    emailField.value = emailField.value.toLowerCase();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const errorEmail = document.getElementById("errorEmail");
+    if (!emailRegex.test(emailField.value)) {
+        errorEmail.textContent = "Please enter a valid email address";
+    } else {
+        errorEmail.textContent = "";
+    }
+});
 
 // Update income display based on slider
 function updateIncomeDisplay() {
@@ -106,6 +118,23 @@ function validateForm() {
 
     // Validate Zip Code
     validateZip();
+    //Validate Email
+    const email = document.getElementById("email");
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.value)) {
+        setError(email, "Please enter a valid email address.");
+        formIsValid = false;
+    } else {
+        clearError(email);
+    }
+
+    // If the form is valid, show the review section and enable the submit button
+    if (formIsValid) {
+        showReview();
+        document.getElementById("submitBtn").style.display = "block";  // Show Submit button
+    } else {
+        document.getElementById("submitBtn").style.display = "none";  // Hide Submit button
+    }
 
     // If there are errors, set valid to false
     if (hasErrors()) {
@@ -121,9 +150,50 @@ function validateForm() {
 
     return valid;
 }
+// Event listener for the confirm password field
+const passwordField = document.getElementById('password');
+const confirmPasswordField = document.getElementById('confirm-password');
+const errorConfirmPassword = document.getElementById('errorConfirmPassword');
+    
+confirmPasswordField.addEventListener('input', () => {
+    if (confirmPasswordField.value !== passwordField.value) {
+        errorConfirmPassword.textContent = "Passwords do not match";
+    } else {
+        errorConfirmPassword.textContent = "";  // Clear error if passwords match
+    }
+});
+// Select the email field and error display span
+const email = document.getElementById("email");
+const errorEmail = document.getElementById("errorEmail");
+
+// Regular expression for validating email format
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// Email validation function on input and on blur to validate as user types and when they leave the field
+emailField.addEventListener("input", validateEmail);
+emailField.addEventListener("blur", validateEmail);
+
+function validateEmail() {
+    // Convert email input to lowercase for consistency
+    emailField.value = emailField.value.toLowerCase();
+
+    // Check if the email matches the regex
+    if (!emailRegex.test(emailField.value)) {
+        errorEmail.textContent = "Please enter a valid email address";
+    } else {
+        errorEmail.textContent = ""; // Clear error if the email is valid
+    }
+}
 
 // Event listener for the form validation
 document.getElementById("patientForm").addEventListener("submit", function(event) {
     event.preventDefault();  // Prevent form submission for testing
     validateForm();
+});
+// Listen for form submission (optional confirmation check)
+document.getElementById('patientForm').addEventListener('submit', function(e) {
+    if (!document.getElementById("firstName").value || !document.getElementById("lastName").value) {
+        e.preventDefault();
+        alert("Please fill out all required fields.");
+    }
 });
