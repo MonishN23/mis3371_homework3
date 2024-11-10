@@ -9,134 +9,109 @@
 </head>
 <body>
     
+
     <div id="banner">
         <img src="file.png" alt="Company Logo">
         <img src="logo-png_processed.png" alt="Company Logo">
         <div id="date-banner"></div>
     </div>
 
-<script>
-    window.onload = function() {
-        // Function to format the date as "Month Day, Year"
-        function formatDate() {
-            const options = { 
-                month: 'long', 
-                day: 'numeric', 
-                year: 'numeric'
-            };
-            const today = new Date();
-            return today.toLocaleDateString('en-US', options);
-        }
-
-        // Display the current date in the banner
-        document.getElementById('date-banner').textContent = "Today's Date: " + formatDate();
-    };
-
-    function validateForm() {
-        let isValid = true;
-
-        // Get the values of the password and confirm password
-        const password = document.getElementById("password").value;
-        const confirmPassword = document.getElementById("confirm-password").value;
-
-        // Check if the password and confirm password match
-        if (password !== confirmPassword) {
-            document.getElementById("errorConfirmPassword").textContent = "Passwords do not match.";
-            isValid = false;
-        } else {
-            document.getElementById("errorConfirmPassword").textContent = "";
-        }
-
-        // Show or hide the submit button based on validation result
-        if (isValid) {
-            document.getElementById("submitBtn").style.display = "inline-block";
-        } else {
-            document.getElementById("submitBtn").style.display = "none";
-        }
-
-        // Review section with filled data
-        if (isValid) {
-            document.getElementById("reviewFirstName").textContent = document.getElementById("firstName").value;
-            document.getElementById("reviewLastName").textContent = document.getElementById("lastName").value;
-            document.getElementById("reviewDOB").textContent = document.getElementById("dob").value;
-            document.getElementById("reviewSSN").textContent = document.getElementById("ssn").value;
-            document.getElementById("reviewAddress1").textContent = document.getElementById("address1").value;
-            document.getElementById("reviewAddress2").textContent = document.getElementById("address2").value;
-            document.getElementById("reviewCity").textContent = document.getElementById("city").value;
-            document.getElementById("reviewState").textContent = document.getElementById("state").value;
-            document.getElementById("reviewZip").textContent = document.getElementById("zip").value;
-            document.getElementById("reviewVaccinationStatus").textContent = document.querySelector('input[name="vaccinationStatus"]:checked') ? document.querySelector('input[name="vaccinationStatus"]:checked').value : "Not Specified";
-            document.getElementById("reviewSalary").textContent = "$" + document.getElementById("income-slider").value;
-            document.getElementById("reviewEmail").textContent = document.getElementById("email").value;
-            document.getElementById("reviewSymptoms").textContent = document.getElementById("symptoms").value;
-            document.getElementById("reviewUsername").textContent = document.getElementById("userId").value;
-
-            // Display the review section
-            document.getElementById("reviewSection").style.display = "block";
-        }
-    }
-</script>
-
     <h1>Patient Registration Form</h1>
     <form id="patientForm" action="thankyouform.html" method="GET">
         <table>
             <tr>
                 <td><label for="firstName">First Name:</label></td>
-                <td><input type="text" id="firstName" name="firstName" maxlength="30" title="Enter your first name" required></td>
-                <td><span id="errorFirstName"></span></td>
+                <td><input type="text" id="firstName" name="firstName" maxlength="30" required pattern="[A-Za-z]+"  title="Enter your first name" required></td>
             </tr>
             <tr>
                 <td><label for="middleName">Middle Name:</label></td>
-                <td><input type="text" id="middleName" name="middleName" maxlength="30" title="Enter your middle name"></td>
-                <td><span id="errorMiddleInitial"></span></td>
+                <td><input type="text" id="middleName" name="middleName" maxlength="30" required pattern="[A-Za-z]+" title="Enter your middle name"></td>
             </tr>
             <tr>
                 <td><label for="lastName">Last Name:</label></td>
-                <td><input type="text" id="lastName" name="lastName" maxlength="30" title="Enter your last name" required></td>
-                <td><span id="errorLastName"></span></td>
+                <td><input type="text" id="lastName" name="lastName" maxlength="30" required pattern="[A-Za-z]+"  title="Enter your last name" required></td>
             </tr>
             <tr>
                 <td><label for="dob">DOB:</label></td>
-                <td><input type="text" id="dob" name="dob" placeholder="MM/DD/YYYY" title="Enter your date of birth" required></td>
-                <td><span id="errorDob"></span></td>
+                <td><input type="text" id="dob" name="dob" placeholder="MM/DD/YYYY" title="Enter your date of birth" pattern="^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/([0-9]{4})$" required></td>
             </tr>
             <tr>
                 <td><label for="ssn">Social Security:</label></td>
-                <td><input type="text" id="ssn" name="ssn" placeholder="XXX-XX-XXXX" title="Enter your SSN" maxlength="11" required></td>
-                <td><span id="errorSsn"></span></td>
+                <td><input type="text" id="ssn" name="ssn" placeholder="XXX-XX-XXXX" title="Enter your SSN" pattern="^\d{3}-\d{2}-\d{4}$" required></td>
             </tr>
             <tr>
                 <td><label for="address1">Address Line 1:</label></td>
-                <td><input type="text" id="address1" name="address1" title="Enter your address" required></td>
-                <td><span id="errorAddress1"></span></td>
+                <td><input type="text" id="address1" name="address1" maxlength="30" title="Enter your address" required></td>
             </tr>
             <tr>
                 <td><label for="address2">Address Line 2:</label></td>
-                <td><input type="text" id="address2" name="address2" title="Enter your address (optional)"></td>
-                <td><span id="errorAddress2"></span></td>
+                <td><input type="text" id="address2" name="address2" maxlength="30" title="Enter your address (optional)"></td>
             </tr>
             <tr>
                 <td><label for="city">City:</label></td>
-                <td><input type="text" id="city" name="city" title="Enter your city" required></td>
-                <td><span id="errorCity"></span></td>
+                <td><input type="text" id="city" name="city" maxlength="30" title="Enter your city" required></td>
             </tr>
             <tr>
                 <td><label for="state">State:</label></td>
                 <td>
                     <select id="state" name="state" title="Select your state" required>
-                            <option value="">Select a state</option>
-                            <option value="AL">Alabama</option>
-                            <option value="AK">Alaska</option>
-                            <option value="AZ">Arizona</option>
-                            <!-- Add more states here -->
+                <option value="AL">Alabama</option>
+                <option value="AK">Alaska</option>
+                <option value="AZ">Arizona</option>
+                <option value="AR">Arkansas</option>
+                <option value="CA">California</option>
+                <option value="CO">Colorado</option>
+                <option value="CT">Connecticut</option>
+                <option value="DE">Delaware</option>
+                <option value="DC">District of Columbia</option>
+                <option value="FL">Florida</option>
+                <option value="GA">Georgia</option>
+                <option value="HI">Hawaii</option>
+                <option value="ID">Idaho</option>
+                <option value="IL">Illinois</option>
+                <option value="IN">Indiana</option>
+                <option value="IA">Iowa</option>
+                <option value="KS">Kansas</option>
+                <option value="KY">Kentucky</option>
+                <option value="LA">Louisiana</option>
+                <option value="ME">Maine</option>
+                <option value="MD">Maryland</option>
+                <option value="MA">Massachusetts</option>
+                <option value="MI">Michigan</option>
+                <option value="MN">Minnesota</option>
+                <option value="MS">Mississippi</option>
+                <option value="MO">Missouri</option>
+                <option value="MT">Montana</option>
+                <option value="NE">Nebraska</option>
+                <option value="NV">Nevada</option>
+                <option value="NH">New Hampshire</option>
+                <option value="NJ">New Jersey</option>
+                <option value="NM">New Mexico</option>
+                <option value="NY">New York</option>
+                <option value="NC">North Carolina</option>
+                <option value="ND">North Dakota</option>
+                <option value="OH">Ohio</option>
+                <option value="OK">Oklahoma</option>
+                <option value="OR">Oregon</option>
+                <option value="PA">Pennsylvania</option>
+                <option value="RI">Rhode Island</option>
+                <option value="SC">South Carolina</option>
+                <option value="SD">South Dakota</option>
+                <option value="TN">Tennessee</option>
+                <option value="TX">Texas</option>
+                <option value="UT">Utah</option>
+                <option value="VT">Vermont</option>
+                <option value="VA">Virginia</option>
+                <option value="WA">Washington</option>
+                <option value="WV">West Virginia</option>
+                <option value="WI">Wisconsin</option>
+                <option value="WY">Wyoming</option>
                     </select>
                 </td>
-                <td><span id="errorState"></span></td>
             </tr>
             <tr>
                 <td><label for="zip">Zip Code:</label></td>
-                <td><input type="text" id="zip" name="zip" maxlength="5" placeholder="XXXXX" title="Enter your zip code" pattern="^\d{5}$" required></td>
-                <td><span id="errorZip"></span></td>
+                <td><input type="text" id="zip" name="zip" maxlength="10" placeholder="XXXXX or XXXXX-XXXX" title="Enter your zip code" pattern="^\d{5}(-\d{4})?$" required></td>
             </tr>
             <tr>
                 <td><label>Have you had:</label></td>
@@ -147,7 +122,6 @@
                     <label><input type="checkbox" name="disease" value="Flu"> Flu</label><br>
                     <label><input type="checkbox" name="disease" value="Other"> Other</label>
                 </td>
-                <td><span class="error-message" id="vaccinated-error"></span></td>
             </tr>
             <tr>
                 <td><label>Have you been vaccinated?</label></td>
@@ -158,60 +132,66 @@
                 </td>
             </tr>
             <tr>
+                <td><label for="salary">Household Income:</label></td>
                 <td>
-                <label for="income-slider" class="flex">
-                    Household Income:
-                    <input type="range" id="income-slider" name="income" min="20000" max="200000" step="1000">
-                </label>
+                    <input type="range" id="salary" name="salary" min="20000" max="200000" step="1000" oninput="updateSalary(this.value)">
+                    <span id="salaryDisplay">$20,000</span>
                 </td>
             </tr>
             <tr>
                 <td><label for="email">Email:</label></td>
-                <td><input type="email" id="email" name="email" required title="Enter your email"></td>
-                <td><span id="errorEmail"></span></td>
+                <td><input type="email" id="email" name="email" placeholder="example@gmail.com" title="Enter a valid email address" required></td>
             </tr>
             <tr>
-                <td><label for="symptoms">Symptoms:</label></td>
-                <td><textarea id="symptoms" name="symptoms" rows="5" placeholder="Describe symptoms here"></textarea></td>
+                <td><label for="symptoms">Describe Your Symptoms:</label></td>
+                <td><textarea id="symptoms" name="symptoms" rows="3" cols="50" title="Describe your symptoms" required></textarea></td>
             </tr>
             <tr>
-                <td><label for="userId">User ID:</label></td>
-                <td><input type="text" id="userId" name="userId" title="Enter your username" required pattern="[A-Za-z0-9]{5,15}"></td>
+                <td><label for="username">Username:</label></td>
+                <td><input type="username" id="username" name="username" title="Enter Username" required></td>
             </tr>
             <tr>
                 <td><label for="password">Password:</label></td>
-                <td><input type="password" id="password" name="password" title="Enter your password" required></td>
-                <td><span id="errorPassword"></span></td>
+                <td><input type="password" id="password" name="password" title="Enter a strong password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required></td>
             </tr>
             <tr>
-                <td><label for="confirm-password">Confirm Password:</label></td>
-                <td><input type="password" id="confirm-password" name="confirm-password" title="Confirm your password" required></td>
-                <td><span id="errorConfirmPassword"></span></td>
+                <td><label for="rePassword">Re-enter Password:</label></td>
+                <td><input type="password" id="rePassword" name="rePassword" title="Re-enter your password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button type="button" onclick="showReview()">Review</button>
+                    <button type="submit">Submit</button>
+                </td>
             </tr>
         </table>
-
-        <button type="button" id="validateBtn" onclick="validateForm()">Validate</button>
-        <button type="submit" id="submitBtn" style="display:none;">Submit</button>
-
-        <div id="reviewSection" style="display:none;">
-            <h3>Review Information</h3>
-            <table>
-                <tr><td>First Name:</td><td><span id="reviewFirstName"></span></td></tr>
-                <tr><td>Last Name:</td><td><span id="reviewLastName"></span></td></tr>
-                <tr><td>DOB:</td><td><span id="reviewDOB"></span></td></tr>
-                <tr><td>SSN:</td><td><span id="reviewSSN"></span></td></tr>
-                <tr><td>Address 1:</td><td><span id="reviewAddress1"></span></td></tr>
-                <tr><td>Address 2:</td><td><span id="reviewAddress2"></span></td></tr>
-                <tr><td>City:</td><td><span id="reviewCity"></span></td></tr>
-                <tr><td>State:</td><td><span id="reviewState"></span></td></tr>
-                <tr><td>Zip Code:</td><td><span id="reviewZip"></span></td></tr>
-                <tr><td>Vaccination Status:</td><td><span id="reviewVaccinationStatus"></span></td></tr>
-                <tr><td>Household Income:</td><td><span id="reviewSalary"></span></td></tr>
-                <tr><td>Email:</td><td><span id="reviewEmail"></span></td></tr>
-                <tr><td>Symptoms:</td><td><span id="reviewSymptoms"></span></td></tr>
-                <tr><td>User ID:</td><td><span id="reviewUsername"></span></td></tr>
-            </table>
-        </div>
     </form>
+
+    <!-- Review Section -->
+    <div id="reviewSection" style="display: none;">
+        <h2>Review Your Information</h2>
+            <p><strong>First Name:</strong> <span id="reviewFirstName"></span></p>
+            <p><strong>Last Name:</strong> <span id="reviewLastName"></span></p>
+            <p><strong>DOB:</strong> <span id="reviewDOB"></span></p>
+            <p><strong>SSN:</strong> <span id="reviewSSN"></span></p>
+            <p><strong>Address 1:</strong> <span id="reviewAddress1"></span></p>
+            <p><strong>Address 2:</strong> <span id="reviewAddress2"></span></p>
+            <p><strong>City:</strong> <span id="reviewCity"></span></p>
+            <p><strong>State:</strong> <span id="reviewState"></span></p>
+            <p><strong>Zip Code:</strong> <span id="reviewZip"></span></p>
+            <p><strong>Diseases:</strong> <span id="reviewDisease"></span></p>
+            <p><strong>Vaccination Status:</strong> <span id="reviewVaccinationStatus"></span></p>
+            <p><strong>Household Income:</strong> <span id="reviewSalary"></span></p>
+            <p><strong>Email:</strong> <span id="reviewEmail"></span></p>
+            <p><strong>Symptoms:</strong> <span id="reviewSymptoms"></span></p>
+            <p><strong>Username:</strong> <span id="reviewUsername"></span></p>
+            <p><strong>Password:</strong> <span>********</span></p> <!-- Masked password -->
+            <button onclick="submitForm()">Submit</button>
+    <button onclick="hideReview()">Edit</button>
+    </div>
+    
+    <footer>
+        <p>MediCare Meds | <a href="mailto:medicaremedsexample@gmail.com">Contact Us</a> | <a href="https://facebook.com">Facebook</a> | <a href="https://twitter.com">Twitter</a></p>
+    </footer>
 </body>
 </html>
