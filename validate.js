@@ -107,17 +107,6 @@ function validateDOB() {
         clearError(dob);
     }
 }
-// Validate password and confirm password
-function validatePasswords() {
-    const password = document.getElementById("password");
-    const confirmPassword = document.getElementById("confirm-password");
-
-    if (password.value !== confirmPassword.value) {
-        setError(confirmPassword, "Passwords do not match.");
-    } else {
-        clearError(confirmPassword);
-    }
-}
 
 // Update salary display based on slider value
 function updateIncomeDisplay() {
@@ -140,17 +129,28 @@ function validateForm() {
     validateDOB();
 
     // Additional checks for salary and other optional fields
+    // Validate salary (if needed)
     validateSalary();
 
     // Check if there are any errors
     const errors = document.querySelectorAll('.error');
+    const submitBtn = document.getElementById("submitBtn");
+
+    // If no errors, show the submit button
     if (errors.length === 0) {
-        document.getElementById("submitBtn").style.display = "block";
-        document.getElementById("reviewSection").style.display = "block";
-        populateReviewSection();
+        submitBtn.style.display = "block"; // Show the submit button
     } else {
-        document.getElementById("submitBtn").style.display = "none";
-        document.getElementById("reviewSection").style.display = "none";
+        submitBtn.style.display = "none"; // Hide the submit button
+    }
+}
+
+// Function to validate salary
+function validateSalary() {
+    const salary = document.getElementById("income-slider");
+    if (!salary.value) {
+        setError(salary, "Please select your salary.");
+    } else {
+        clearError(salary);
     }
 }
 
@@ -184,5 +184,6 @@ document.getElementById("password").addEventListener('input', validatePasswords)
 document.getElementById("confirm-password").addEventListener('input', validatePasswords);
 document.getElementById("income-slider").addEventListener('input', updateIncomeDisplay);
 
+// Trigger form validation on 'Validate' button click
 document.getElementById("validateBtn").addEventListener('click', validateForm);
 
