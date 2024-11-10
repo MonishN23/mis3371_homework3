@@ -12,6 +12,20 @@ function clearError(element) {
     element.classList.remove("error");
 }
 
+// Clear all errors
+function clearAllErrors() {
+    const errorMessages = document.querySelectorAll('span[id^="error"]');
+    for (let error of errorMessages) {
+        error.textContent = ""; // Clear the error text
+    }
+
+    // Remove "error" class from all form elements
+    const formElements = document.querySelectorAll('input, select, textarea');
+    for (let element of formElements) {
+        element.classList.remove("error");
+    }
+}
+
 // Validate first and last names
 function validateName(element) {
     const namePattern = /^[A-Za-z'-]+$/;
@@ -21,17 +35,6 @@ function validateName(element) {
         clearError(element);
     }
 }
-
-// Validate Date of Birth
-// Function to format the date as "Month Day, Year"
-function formatDate() {
-    const options = {  month: 'long', day: 'numeric' ,year: 'numeric'};
-    const today = new Date();
-    return today.toLocaleDateString('en-US', options);
-}
-
-// Display the current date in the banner
-document.getElementById('current-date').textContent = "Today's Date: " + formatDate();
 
 // Validate SSN (Social Security Number)
 function validateSSN() {
@@ -54,27 +57,94 @@ function validateZip() {
         clearError(zip);
     }
 }
-// Email validation function (converts to lowercase)
-const emailField = document.getElementById("email");
-emailField.addEventListener("input", function() {
-    emailField.value = emailField.value.toLowerCase();
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const errorEmail = document.getElementById("errorEmail");
-    if (!emailRegex.test(emailField.value)) {
-        errorEmail.textContent = "Please enter a valid email address";
-    } else {
-        errorEmail.textContent = "";
-    }
-});
 
-// Update income display based on slider
-function updateIncomeDisplay() {
-    const slider = document.getElementById("income-slider");
-    document.getElementById("income-display").textContent = "$" + slider.value;
+// Validate email
+function validateEmail() {
+    const email = document.getElementById("email");
+    const emailPattern = /^[a-z0-9]+@[a-z0-9]+\.[a-z]{2,3}$/i;
+    if (!emailPattern.test(email.value)) {
+        setError(email, "Enter a valid email address.");
+    } else {
+        clearError(email);
+    }
 }
 
-// Show the review section with entered values
-function showReview() {
+// Validate user ID
+function validateUserId() {
+    const userId = document.getElementById("userId");
+    const userIdPattern = /^[a-zA-Z0-9_-]{6,20}$/;
+    if (!userIdPattern.test(userId.value)) {
+        setError(userId, "User ID must be 6-20 characters long and can contain letters, numbers, underscores, or hyphens.");
+    } else {
+        clearError(userId);
+    }
+}
+
+// Validate password and confirm password
+function validatePasswords() {
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirm-password");
+
+    if (password.value !== confirmPassword.value) {
+        setError(confirmPassword, "Passwords do not match.");
+    } else {
+        clearError(confirmPassword);
+    }
+}
+
+// Validate Date of Birth
+function validateDOB() {
+    const dob = document.getElementById("dob");
+    const dobDate = new Date(dob.value);
+    const today = new Date();
+    const age = today.getFullYear() - dobDate.getFullYear();
+
+    if (dobDate > today) {
+        setError(dob, "Date of birth cannot be in the future.");
+    } else if (age > 120) {
+        setError(dob, "Date of birth cannot be more than 120 years ago.");
+    } else {
+        clearError(dob);
+    }
+}
+
+// Update salary display based on slider value
+function updateIncomeDisplay() {
+    const salary = document.getElementById("income-slider");
+    const salaryDisplay = document.getElementById("income-display");
+    salaryDisplay.textContent = "$" + salary.value;
+}
+
+// Validate all fields and return true if valid
+function validateForm() {
+    clearAllErrors();
+
+    validateName(document.getElementById("firstName"));
+    validateName(document.getElementById("lastName"));
+    validateSSN();
+    validateZip();
+    validateEmail();
+    validateUserId();
+    validatePasswords();
+    validateDOB();
+
+    // Additional checks for salary and other optional fields
+    validateSalary();
+
+    // Check if there are any errors
+    const errors = document.querySelectorAll('.error');
+    if (errors.length === 0) {
+        document.getElementById("submitBtn").style.display = "block";
+        document.getElementById("reviewSection").style.display = "block";
+        populateReviewSection();
+    } else {
+        document.getElementById("submitBtn").style.display = "none";
+        document.getElementById("reviewSection").style.display = "none";
+    }
+}
+
+// Populate review section with form data
+function populateReviewSection() {
     document.getElementById("reviewFirstName").textContent = document.getElementById("firstName").value;
     document.getElementById("reviewLastName").textContent = document.getElementById("lastName").value;
     document.getElementById("reviewDOB").textContent = document.getElementById("dob").value;
@@ -84,116 +154,24 @@ function showReview() {
     document.getElementById("reviewCity").textContent = document.getElementById("city").value;
     document.getElementById("reviewState").textContent = document.getElementById("state").value;
     document.getElementById("reviewZip").textContent = document.getElementById("zip").value;
-    document.getElementById("reviewVaccinationStatus").textContent = document.querySelector('input[name="vaccinationStatus"]:checked')?.value || "N/A";
-    document.getElementById("reviewSalary").textContent = document.getElementById("income-slider").value;
     document.getElementById("reviewEmail").textContent = document.getElementById("email").value;
+    document.getElementById("reviewVaccinationStatus").textContent = document.querySelector('input[name="vaccinationStatus"]:checked')?.value || "N/A";
     document.getElementById("reviewSymptoms").textContent = document.getElementById("symptoms").value;
+    document.getElementById("reviewSalary").textContent = "$" + document.getElementById("income-slider").value;
     document.getElementById("reviewUsername").textContent = document.getElementById("userId").value;
-
-    // Show the review section
-    document.getElementById("reviewSection").style.display = "block";
 }
 
-// Function to check if there are any validation errors
-function hasErrors() {
-    const errorMessages = document.querySelectorAll('span[id^="error"]');
-    for (let error of errorMessages) {
-        if (error.textContent !== '') {
-            return true;
-        }
-    }
-    return false;
-}
+// Call validateForm() whenever a user interacts with the form to validate fields dynamically
+document.getElementById("firstName").addEventListener('input', () => validateName(document.getElementById("firstName")));
+document.getElementById("lastName").addEventListener('input', () => validateName(document.getElementById("lastName")));
+document.getElementById("dob").addEventListener('change', validateDOB);
+document.getElementById("ssn").addEventListener('input', validateSSN);
+document.getElementById("zip").addEventListener('input', validateZip);
+document.getElementById("email").addEventListener('input', validateEmail);
+document.getElementById("userId").addEventListener('input', validateUserId);
+document.getElementById("password").addEventListener('input', validatePasswords);
+document.getElementById("confirm-password").addEventListener('input', validatePasswords);
+document.getElementById("income-slider").addEventListener('input', updateIncomeDisplay);
 
-// Function to validate the entire form
-function validateForm() {
-    let valid = true;
+document.getElementById("validateBtn").addEventListener('click', validateForm);
 
-    // Validate first and last names
-    validateName(document.getElementById("firstName"));
-    validateName(document.getElementById("lastName"));
-    
-    // Validate SSN
-    validateSSN();
-
-    // Validate Zip Code
-    validateZip();
-    //Validate Email
-    const email = document.getElementById("email");
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email.value)) {
-        setError(email, "Please enter a valid email address.");
-        formIsValid = false;
-    } else {
-        clearError(email);
-    }
-
-    // If the form is valid, show the review section and enable the submit button
-    if (formIsValid) {
-        showReview();
-        document.getElementById("submitBtn").style.display = "block";  // Show Submit button
-    } else {
-        document.getElementById("submitBtn").style.display = "none";  // Hide Submit button
-    }
-
-    // If there are errors, set valid to false
-    if (hasErrors()) {
-        valid = false;
-    }
-
-    // Show or hide the Submit button based on validity
-    if (valid) {
-        document.getElementById("submitBtn").style.display = "inline-block"; // Show Submit button
-    } else {
-        document.getElementById("submitBtn").style.display = "none"; // Hide Submit button
-    }
-
-    return valid;
-}
-// Event listener for the confirm password field
-const passwordField = document.getElementById('password');
-const confirmPasswordField = document.getElementById('confirm-password');
-const errorConfirmPassword = document.getElementById('errorConfirmPassword');
-    
-confirmPasswordField.addEventListener('input', () => {
-    if (confirmPasswordField.value !== passwordField.value) {
-        errorConfirmPassword.textContent = "Passwords do not match";
-    } else {
-        errorConfirmPassword.textContent = "";  // Clear error if passwords match
-    }
-});
-// Select the email field and error display span
-const email = document.getElementById("email");
-const errorEmail = document.getElementById("errorEmail");
-
-// Regular expression for validating email format
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-// Email validation function on input and on blur to validate as user types and when they leave the field
-emailField.addEventListener("input", validateEmail);
-emailField.addEventListener("blur", validateEmail);
-
-function validateEmail() {
-    // Convert email input to lowercase for consistency
-    emailField.value = emailField.value.toLowerCase();
-
-    // Check if the email matches the regex
-    if (!emailRegex.test(emailField.value)) {
-        errorEmail.textContent = "Please enter a valid email address";
-    } else {
-        errorEmail.textContent = ""; // Clear error if the email is valid
-    }
-}
-
-// Event listener for the form validation
-document.getElementById("patientForm").addEventListener("submit", function(event) {
-    event.preventDefault();  // Prevent form submission for testing
-    validateForm();
-});
-// Listen for form submission (optional confirmation check)
-document.getElementById('patientForm').addEventListener('submit', function(e) {
-    if (!document.getElementById("firstName").value || !document.getElementById("lastName").value) {
-        e.preventDefault();
-        alert("Please fill out all required fields.");
-    }
-});
